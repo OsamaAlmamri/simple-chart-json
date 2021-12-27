@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Jumlah rumah sakit yang terakreditasi di DKI Jakarta tahun 2019</h2>
+    <div style="position: relative; height:60vh; width:40vw">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script>
+        var A=0;
+        var B=0;
+        var C=0;
+        
+        //data json di ambil dari https://data.jakarta.go.id/read-resource/json/daftar-rumah-sakit-yang-terakreditasi-di-dki-jakarta-tahun-2019/fb52a52c-21b9-4d2a-afa2-9e8c4273df7e
+        var hospital = '\n\[{"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Daerah Cengkareng","kelas": "B","kabupaten/kota": "Jakarta Barat","tanggal_mulai_survei": "2019-10-21","tanggal_masa_berlaku": "2022-10-20","status": "Tingkat Paripurna","tanggal_update": "2019-11-13"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Penyakit Infeksi Prof. Dr. Sulian","kelas": "A","kabupaten/kota": "Jakarta Utara","tanggal_mulai_survei": "2016-11-22","tanggal_masa_berlaku": "2019-11-21","status": "Tingkat Paripurna","tanggal_update": "2017-08-04"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Daerah Pasar Rebo","kelas": "B","kabupaten/kota": "Jakarta Timur","tanggal_mulai_survei": "2016-11-23","tanggal_masa_berlaku": "2019-11-22","status": "Tingkat Paripurna","tanggal_update": "2017-09-02"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Setia Mitra","kelas": "C","kabupaten/kota": "Jakarta Selatan","tanggal_mulai_survei": "2016-11-29","tanggal_masa_berlaku": "2019-11-28","status": "Tingkat Paripurna","tanggal_update": "2017-03-16"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Khusus Mata Jakarta Eye Center","kelas": "B","kabupaten/kota": "Jakarta Pusat","tanggal_mulai_survei": "2017-01-18","tanggal_masa_berlaku": "2020-01-17","status": "Tingkat Paripurna","tanggal_update": "2017-03-16"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Husada","kelas": "B","kabupaten/kota": "Jakarta Pusat","tanggal_mulai_survei": "2017-02-01","tanggal_masa_berlaku": "2020-01-31","status": "Tingkat Paripurna","tanggal_update": "2017-02-28"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum AL Cilandak","kelas": "B","kabupaten/kota": "Jakarta Selatan","tanggal_mulai_survei": "2017-02-08","tanggal_masa_berlaku": "2020-02-07","status": "Tingkat Paripurna","tanggal_update": "2017-03-13"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Grha Kedoya","kelas": "B","kabupaten/kota": "Jakarta Barat","tanggal_mulai_survei": "2017-03-20","tanggal_masa_berlaku": "2020-03-19","status": "Tingkat Paripurna","tanggal_update": "2017-12-10"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Ciputra Hospital Citragarden","kelas": "B","kabupaten/kota": "Jakarta Barat","tanggal_mulai_survei": "2017-03-21","tanggal_masa_berlaku": "2020-03-20","status": "Tingkat Paripurna","tanggal_update": "2017-08-04"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Ibu dan Anak Family","kelas": "C","kabupaten/kota": "Jakarta Utara","tanggal_mulai_survei": "2017-04-05","tanggal_masa_berlaku": "2020-04-04","status": "Tingkat Paripurna","tanggal_update": "2017-01-05"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Omni Medical Center","kelas": "B","kabupaten/kota": "Jakarta Timur","tanggal_mulai_survei": "2017-04-25","tanggal_masa_berlaku": "2020-04-24","status": "Tingkat Paripurna","tanggal_update": "2017-08-28"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Islam Jakarta Utara","kelas": "C","kabupaten/kota": "Jakarta Utara","tanggal_mulai_survei": "2017-04-26","tanggal_masa_berlaku": "2020-04-25","status": "Tingkat Paripurna","tanggal_update": "2017-05-19"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Gading Pluit","kelas": "B","kabupaten/kota": "Jakarta Utara","tanggal_mulai_survei": "2017-05-03","tanggal_masa_berlaku": "2020-05-02","status": "Tingkat Paripurna","tanggal_update": "2017-07-06"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Pusat Pertamina","kelas": "B","kabupaten/kota": "Jakarta Selatan","tanggal_mulai_survei": "2017-05-16","tanggal_masa_berlaku": "2020-05-15","status": "Tingkat Paripurna","tanggal_update": "2017-09-06"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Hermina Daan Mogot","kelas": "B","kabupaten/kota": "Jakarta Barat","tanggal_mulai_survei": "2017-05-17","tanggal_masa_berlaku": "2020-05-16","status": "Tingkat Paripurna","tanggal_update": "2017-09-06"},\n\
+        {"tahun_standar": 2012,"nama_rumah_sakit": "RS Umum Daerah Koja","kelas": "B","kabupaten/kota": "Jakarta Utara","tanggal_mulai_survei": "2017-06-05","tanggal_masa_berlaku": "2020-06-04","status": "Tingkat Paripurna","tanggal_update": "2017-08-28"}]';
+
+        JSON.parse(hospital).forEach(function (value) {
+        if (value["kelas"] == "A")
+            A++;
+        else if(value["kelas"] == "B")
+            B++;
+        else
+            C++;
+        });
+
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+        type: 'pie',
+            data: {
+            labels: ['A', 'B', 'C'],
+            datasets: [{
+                label: '# of Votes',
+                data: [A, B, C],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                ],
+                borderWidth: 1
+            }]
+            },
+            options: {
+            scales: {
+                yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+                }]
+            }
+            }
+        });
+  </script>
+</body>
+</html>
